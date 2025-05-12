@@ -9,29 +9,29 @@ const bookNumOfPages = document.querySelector("#bookNumOfPages");
 const bookReadIt = document.querySelector("#readIt");
 const deleteButtons = document.querySelectorAll("[data-id]");
 
-function Book(title, author, numOfPages, read, id){
+function Book(title, author, numOfPages, status, id){
     if (!new.target) {
         throw Error("You must use the 'new' operator to call the constructor");
     }
     this.title = title;
     this.author = author;
     this.numOfPages = numOfPages;
-    this.read = read;
+    this.status = status;
     this.id = id;
 }
 
 Book.prototype.changeStatus = function () {
-    if (this.read.toLowerCase() == "unread"){
-        this.read = "Read";
+    if (this.status.toLowerCase() == "unread"){
+        this.status = "Read";
     } else{
-        this.read = "Unread";
+        this.status = "Unread";
     }
 }
 
 
-function addBookToLibrary(title, author, numOfPages, read){
+function addBookToLibrary(title, author, numOfPages, status){
     let id = crypto.randomUUID();
-    newBook = new Book(title, author, numOfPages, read, id);
+    newBook = new Book(title, author, numOfPages, status, id);
     myLibrary.push(newBook);
 }
 
@@ -49,7 +49,20 @@ function showLibrary(library){
         for (const property in book) {
             if (property == "info" || property == "id" || property == "changeStatus") continue;
             let newProperty = document.createElement("div");
-            newProperty.textContent = `${property}: ${book[property]}`;
+            switch(property){
+                case "title":
+                    newProperty.textContent = `Title: ${book[property]}`;
+                    break;
+                case "author":
+                    newProperty.textContent = `Author: ${book[property]}`;
+                    break;
+                case "numOfPages":
+                    newProperty.textContent = `Number of pages: ${book[property]}`;
+                    break;
+                case "status":
+                    newProperty.textContent = `Status: ${book[property]}`;
+                    break;
+            }
             newBook.appendChild(newProperty);
         }
         let deleteButton = document.createElement("button");
@@ -63,8 +76,8 @@ function showLibrary(library){
                     myLibrary.splice(myLibrary.indexOf(book), 1);
                 }
                 showLibrary(myLibrary);
-            })
-        })
+            });
+        });
         let bookStatus = document.createElement("button");
         bookStatus.setAttribute("type", "button");
         bookStatus.textContent = "Change status";
@@ -89,17 +102,17 @@ showForm.addEventListener("click", () => {
 })
 
 confirmBtn.addEventListener("click", (event) =>{
-    let status;
-    if (bookReadIt.checked){
-        status = "Read"
-    } else {
-        status = "Unread"
-    }
+    let status = getStatus(bookReadIt.checked);
     addBookToLibrary(bookTitle.value, bookAuthor.value, bookNumOfPages.value, status);
     showLibrary(myLibrary);
     event.preventDefault();
     dialog.close();
 })
+
+function getStatus(status){
+    if(status) return "read";
+    else return "Unread"
+}
 
 addBookToLibrary("Harry Potter", "J. K. Rowling", "109", "Unread");
 addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", "1178", "Urnead");
