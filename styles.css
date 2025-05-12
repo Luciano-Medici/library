@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6 {
 /* My styles */
 
 body{
-    background-color: lightgray;
+    font-family: "Montserrat", sans-serif;
     width: 100vw;
 }
 
@@ -69,4 +69,38 @@ body{
     background-color: white;
     border: 1px solid black;
     border-radius: 10px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 100vh;
+}
+
+.header, .side{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.header{
+    padding: 50px;
+    background-color: white;
+}
+
+.side, .main{
+    padding: 10px 20px;
+    background-color: rgb(232, 232, 232);
+}
+
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+form{
+    display: grid;
+    gap: 10px;
 }

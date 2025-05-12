@@ -7,6 +7,7 @@ const bookTitle = document.querySelector("#bookTitle");
 const bookAuthor = document.querySelector("#bookAuthor");
 const bookNumOfPages = document.querySelector("#bookNumOfPages");
 const bookReadIt = document.querySelector("#readIt");
+const deleteButtons = document.querySelectorAll("[data-id]");
 
 function Book(title, author, numOfPages, read, id){
     if (!new.target) {
@@ -17,13 +18,19 @@ function Book(title, author, numOfPages, read, id){
     this.numOfPages = numOfPages;
     this.read = read;
     this.id = id;
-    this.info = function () {
-        return `${this.title} by ${this.author} has ${this.numOfPages} and you ${this.read} read it.`;
+}
+
+Book.prototype.changeStatus = function () {
+    if (this.read.toLowerCase() == "unread"){
+        this.read = "Read";
+    } else{
+        this.read = "Unread";
     }
 }
 
+
 function addBookToLibrary(title, author, numOfPages, read){
-    let id = crypto.randomUUID()
+    let id = crypto.randomUUID();
     newBook = new Book(title, author, numOfPages, read, id);
     myLibrary.push(newBook);
 }
@@ -33,19 +40,39 @@ function showLibrary(library){
     // porque si no estuviera agregaria cada vez que agrego un libro, todos los libros de nuevo 
     // a la libreria.
     while (books.firstChild) {
-        console.log("Estoy aqui");
         books.removeChild(books.firstChild);
-      }
+    }
     library.forEach(book => {
         let newBook = document.createElement("div");
         newBook.setAttribute("class", "card");
         books.appendChild(newBook);
         for (const property in book) {
-            if (property == "info") break;
+            if (property == "info" || property == "id" || property == "changeStatus") continue;
             let newProperty = document.createElement("div");
             newProperty.textContent = `${property}: ${book[property]}`;
             newBook.appendChild(newProperty);
         }
+        let deleteButton = document.createElement("button");
+        deleteButton.setAttribute("type", "button");
+        deleteButton.setAttribute("data-id", book.id);
+        deleteButton.textContent = "Delete";
+        newBook.appendChild(deleteButton);
+        deleteButton.addEventListener("click", e => {
+            myLibrary.forEach(book => {
+                if (book.id == e.target.dataset.id){
+                    myLibrary.splice(myLibrary.indexOf(book), 1);
+                }
+                showLibrary(myLibrary);
+            })
+        })
+        let bookStatus = document.createElement("button");
+        bookStatus.setAttribute("type", "button");
+        bookStatus.textContent = "Change status";
+        bookStatus.addEventListener("click", () => {
+            book.changeStatus();
+            showLibrary(myLibrary);
+        });
+        newBook.appendChild(bookStatus);
     });
 }
 
@@ -53,7 +80,7 @@ function clearForm(){
     bookTitle.value = "";
     bookAuthor.value = "";
     bookNumOfPages.value = "";
-    bookReadIt.value = "";
+    bookReadIt.checked = false;
 }
 
 showForm.addEventListener("click", () => {
@@ -62,7 +89,13 @@ showForm.addEventListener("click", () => {
 })
 
 confirmBtn.addEventListener("click", (event) =>{
-    addBookToLibrary(bookTitle.value, bookAuthor.value, bookNumOfPages.value, bookReadIt.value);
+    let status;
+    if (bookReadIt.checked){
+        status = "Read it"
+    } else {
+        status = "Unread"
+    }
+    addBookToLibrary(bookTitle.value, bookAuthor.value, bookNumOfPages.value, status);
     showLibrary(myLibrary);
     event.preventDefault();
     dialog.close();
