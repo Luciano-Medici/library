@@ -91,7 +91,7 @@ showForm.addEventListener("click", () => {
 confirmBtn.addEventListener("click", (event) =>{
     let status;
     if (bookReadIt.checked){
-        status = "Read it"
+        status = "Read"
     } else {
         status = "Unread"
     }
@@ -100,3 +100,13 @@ confirmBtn.addEventListener("click", (event) =>{
     event.preventDefault();
     dialog.close();
 })
+
+addBookToLibrary("Harry Potter", "J. K. Rowling", "109", "Unread");
+addBookToLibrary("The Lord of the Rings", "J.R.R. Tolkien", "1178", "Urnead");
+addBookToLibrary("To Kill a Mockingbird", "Harper Lee", "281", "Unread");
+addBookToLibrary("1984", "George Orwell", "328", "Read");
+addBookToLibrary("Pride and Prejudice", "Jane Austen", "432", "Unread");
+addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", "277", "Unread");
+addBookToLibrary("The Da Vinci Code", "Dan Brown", "489", "Unread");
+addBookToLibrary(" The Alchemist", "Paulo Coelho", "208", "Read");
+showLibrary(myLibrary);

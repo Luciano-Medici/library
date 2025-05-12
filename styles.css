@@ -52,29 +52,61 @@ h1, h2, h3, h4, h5, h6 {
     isolation: isolate;
 }
 
+html{
+    font-size: 16px;
+}
+
+:root{
+    --general-background: #F9FAFB;
+    --header-background: #1F2937;
+    --header-color: #FFFFFF;
+    --sidebar-background: #374151;
+    --main-backgorund: #F3F4F6;
+    --button-background: #10B981;
+    --button-background-hover: #059669;
+    --cards-background: #FFFFFF;
+    --cards-border: 1px solid #E5E7EB;
+    --text-color: #111827;
+    --delete-button-background: #EF4444;
+    --delete-button-background-hover: #DC2626;
+    --status-button-background: #3B82F6;
+    --status-button-background-hover: #2563EB;
+    --button-color: #FFFFFF;
+}
+
 /* My styles */
 
 body{
-    font-family: "Montserrat", sans-serif;
-    width: 100vw;
+    font-family: "Cookie", cursive;
+    display: grid;
+    grid-template-rows: 1fr 10fr;
+    max-height: 100vh;
+    color: var(--text-color);
+    background-color: var(--general-background);
 }
 
-#books{
+.main{
     display: grid;
-    grid-template-rows: 1fr;
+    grid-template-columns: repeat(auto-fit, 250px);
+    grid-auto-rows: 250px;
+    gap: 5px;
+    overflow: scroll;
+    background-color: var(--main-backgorund);
 }
+
 .card{
     padding: 20px;
     margin: 10px 0;
-    background-color: white;
-    border: 1px solid black;
+    background-color: var(--cards-background);
+    border: var(--cards-border);
     border-radius: 10px;
+    height: max-content;
 }
 
 .grid{
     display: grid;
     grid-template-columns: 200px 1fr;
-    grid-template-rows: 100vh;
+    grid-template-rows: 1fr;
 }
 
 .header, .side{
@@ -84,13 +116,25 @@ body{
 }
 
 .header{
-    padding: 50px;
-    background-color: white;
+    font-size: 2.5rem;
+    background-color: var(--header-background);
+    color: var(--header-color);
+}
+
+.side{
+    background-color: var(--sidebar-background);
+    >button{
+        background-color: var(--button-background);
+    }
+    >button:hover{
+        background-color: var(--button-background-hover);
+        cursor: pointer;
+    }
 }
 
 .side, .main{
+    font-size: 1.5rem;
     padding: 10px 20px;
-    background-color: rgb(232, 232, 232);
 }
 
 dialog {
@@ -103,4 +147,23 @@ dialog {
 form{
     display: grid;
     gap: 10px;
+}
+
+.card>button:first-of-type{
+    background-color: var(--delete-button-background);
+    color: var(--button-color);
+    margin-right: 10px;
+}
+
+.card>button:first-of-type:hover{
+    background-color: var(--delete-button-background-hover);
+}
+
+.card>button:last-child{
+    background-color: var(--status-button-background);
+    color: var(--button-color);
+}
+
+.card>button:last-child:hover{
+    background-color: var(--status-button-background-hover);
 }
