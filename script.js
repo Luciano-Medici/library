@@ -9,39 +9,38 @@ const bookNumOfPages = document.querySelector("#bookNumOfPages");
 const bookReadIt = document.querySelector("#readIt");
 const deleteButtons = document.querySelectorAll("[data-id]");
 
-function Book(title, author, numOfPages, status, id){
-    if (!new.target) {
-        throw Error("You must use the 'new' operator to call the constructor");
-    }
-    this.title = title;
-    this.author = author;
-    this.numOfPages = numOfPages;
-    this.status = status;
-    this.id = id;
-}
+// Adding Classes instead of object constructor
 
-Book.prototype.changeStatus = function () {
-    if (this.status.toLowerCase() == "unread"){
-        this.status = "Read";
-    } else{
-        this.status = "Unread";
+class Book{
+    constructor(title, author, numOfPages, status, id){
+        this.title = title;
+        this.author = author;
+        this.numOfPages = numOfPages;
+        this.status = status;
+        this.id = id;
+    }
+
+    changeStatus() {
+        this.status = this.status === "Unread" ? "Read" : "Unread" ;
+    }
+
+    static clearForm(){
+        bookTitle.value = "";
+        bookAuthor.value = "";
+        bookNumOfPages.value = "";
+        bookReadIt.checked = false;
     }
 }
-
 
 function addBookToLibrary(title, author, numOfPages, status){
     let id = crypto.randomUUID();
-    newBook = new Book(title, author, numOfPages, status, id);
+    const newBook = new Book(title, author, numOfPages, status, id);
     myLibrary.push(newBook);
 }
 
 function showLibrary(library){
-    // Esta parte del codigo está para dejar limpia la zona en la que se muestran los lobros,
-    // porque si no estuviera agregaria cada vez que agrego un libro, todos los libros de nuevo 
-    // a la libreria.
-    while (books.firstChild) {
-        books.removeChild(books.firstChild);
-    }
+    books.textContent = "";
+
     library.forEach(book => {
         let newBook = document.createElement("div");
         newBook.setAttribute("class", "card");
@@ -89,15 +88,15 @@ function showLibrary(library){
     });
 }
 
-function clearForm(){
-    bookTitle.value = "";
-    bookAuthor.value = "";
-    bookNumOfPages.value = "";
-    bookReadIt.checked = false;
-}
+// function clearForm(){
+//     bookTitle.value = "";
+//     bookAuthor.value = "";
+//     bookNumOfPages.value = "";
+//     bookReadIt.checked = false;
+// }
 
 showForm.addEventListener("click", () => {
-    clearForm();
+    Book.clearForm();
     dialog.showModal();
 })
 
